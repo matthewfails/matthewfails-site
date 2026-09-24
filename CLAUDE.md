@@ -33,7 +33,15 @@ cd /tmp/mfsite && python3 -m http.server 8765   # http://localhost:8765/matthewf
 - Footer credit `params.mysite.credit: false`; invisible marker `discovery: true`. The mysite team form was submitted on 2026-09-24; never resend it.
 - For published articles, use the published title and author names over the C.V. where they differ (e.g. "Resources, Rent Diversification…", "Marc C. DuBuis").
 
+## Status and records (as of 2026-09-24)
+- **No custom domain** (owner's choice): the github.io address above is the permanent URL. Don't propose moving it unless asked.
+- **Google Search Console**: property verified via `params.google_site_verification` in `hugo.yaml`; sitemap submitted. Don't remove that tag, or the verification lapses.
+- **Old Google Site** (sites.google.com/oakland.edu/mfails) now points visitors to this site. The owner plans to unpublish it once this site outranks it in search.
+- **C.V.**: `hugo-site/static/files/fails-cv.pdf` (the `/cv/` short link points here). Current file = `MDF_CV_Sept26_update.pdf`; its "personal website" link points to this site. To update, overwrite that one file, keeping the same name.
+- **Teaching page** opening describes courses by topic, not course title (owner preference).
+
 ## Pending
+- Owner will update the OU Political Science directory link after the new headshot arrives.
 - New headshot coming (Sept/Oct 2026): replace `hugo-site/assets/media/bio-photo.jpg`, keeping the same filename. It's auto-cropped to a circle.
 
 ## Gotchas

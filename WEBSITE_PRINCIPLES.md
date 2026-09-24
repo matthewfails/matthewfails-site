@@ -38,3 +38,4 @@ Most rendering is project-owned; Blox supplies the Tailwind pipeline, colour-the
 - One source of truth per fact; homepage intro ≠ bio; no process commentary on visible pages; labels in `i18n/en.yaml`.
 - Always light mode. Colours are tokens in `assets/css/custom.css`.
 - `params.mysite.credit` (false per form) and `params.mysite.discovery` (true per form).
+- `params.google_site_verification` emits the Google Search Console `<meta name="google-site-verification">` tag (in `site_head.html`); keep it, or Search Console loses verification.
