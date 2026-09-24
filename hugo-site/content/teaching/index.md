@@ -1,7 +1,7 @@
 ---
 title: "Teaching"
 ---
-I teach a variety of courses in the field of Comparative Politics, including Introduction to Comparative Politics, Dictatorships, the Comparative Politics of the Resource Curse, the Politics of Development, African Politics, and an International Studies course titled Introduction to Africa.
+I teach a variety of courses in comparative politics, from introductory surveys of the field to upper-level courses on dictatorships, democratic backsliding and political institutions, the resource curse, the politics of development, and African politics. I also regularly teach undergraduate research methods and data analysis, and developed a collaborative service-learning project with Oakland County Parks and Recreation in one of these courses. [Read an article about the Oakland County Parks project (PDF)]({{< staticrel "files/oakland-parks-article.pdf" >}}).
 
 In the Fall of 2024, I led one of Oakland University's inaugural Diplomacy Lab teams of student researchers, where we focused on the resurgence of military coups in West Africa. [Read an article about the Diplomacy Lab experience (PDF)]({{< staticrel "files/diplomacy-lab-article.pdf" >}}).
 
@@ -9,8 +9,6 @@ I am a strong proponent of undergraduate research and have mentored dozens of st
 
 Since 2017, I have organized and facilitated the Undergraduate Political Science Research Symposium, which provides opportunities for students to present poster versions of their research. [See photos and more information about the research symposiums](https://sites.google.com/oakland.edu/politicalscienceposters).
 <!-- FLAG FOR OWNER: the old Teaching page says the symposium has run "since 2017"; your C.V. lists "Founder, Political Science Research Symposium (2010-present)". Kept the old site's wording. -->
-
-I also teach undergraduate research methods courses, including Data Analysis for Political Science. Recently, I pioneered a collaborative service learning project in this class with Oakland County Parks and Recreation. [Read an article about the Oakland County Parks project (PDF)]({{< staticrel "files/oakland-parks-article.pdf" >}}).
 
 ## Courses Taught
 
