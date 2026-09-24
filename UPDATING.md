@@ -94,6 +94,13 @@ In `hugo-site/hugo.yaml`, under `params.mysite`:
 `credit: true` shows a small "Created using GaryKing.org/mysite" line in the footer (currently off).
 `discovery: false` removes the invisible marker.
 
+## Coming back after a while
+
+- **Small text edits:** edit the file on github.com and commit. The site updates about two minutes later.
+- **Bigger changes:** open VS Code in WSL, start Claude, and say what you want changed on "my academic website at ~/matthewfails-site".
+  Claude reads `CLAUDE.md` in this repository, updates its copy from GitHub, previews the change for you, and publishes when you approve.
+- **New computer:** `gh repo clone matthewfails/matthewfails-site`, then ask Claude to set up the local preview. `CLAUDE.md` has the steps.
+
 ## Preview locally (optional)
 
 With Hugo extended ≥ 0.148.2 and Node installed, run from `hugo-site/`:
