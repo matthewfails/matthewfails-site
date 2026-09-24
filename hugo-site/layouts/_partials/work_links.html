@@ -1,0 +1,9 @@
+{{/* Link buttons from front-matter links: [{name,url}]. Relative urls (files/...) resolve under baseURL. */}}
+{{- with .Params.links }}
+<div class="work-links">
+  {{- range . }}
+  {{- $u := cond (or (strings.HasPrefix .url "http") (strings.HasPrefix .url "mailto:")) .url (strings.TrimPrefix "/" .url | relURL) }}
+  <a class="btn btn-primary" href="{{ $u }}">{{ .name }}</a>
+  {{- end }}
+</div>
+{{- end }}

@@ -1,0 +1,56 @@
+{{- $owner := site.Params.owner -}}
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  {{- if .IsHome }}
+  <title>{{ $owner.name }} | {{ $owner.title }}, {{ $owner.institution }}</title>
+  {{- else }}
+  <title>{{ .Title }} | {{ $owner.name }}</title>
+  {{- end }}
+  <meta name="author" content="{{ $owner.name }}" />
+  {{- $desc := "" -}}
+  {{- with .Params.summary }}{{ $desc = . }}{{ else }}{{ with .Params.abstract }}{{ $desc = . }}{{ else }}{{ with .Params.description }}{{ $desc = . }}{{ else }}{{ $desc = printf "%s, %s, %s." $owner.name $owner.title $owner.institution }}{{ end }}{{ end }}{{ end }}
+  <meta name="description" content="{{ $desc | plainify | htmlUnescape | truncate 300 }}" />
+  <link rel="canonical" href="{{ .Permalink }}" />
+  {{- if .Params.private }}<meta name="robots" content="noindex" />{{ end }}
+
+  {{/* Open Graph */}}
+  <meta property="og:site_name" content="{{ $owner.name }}" />
+  <meta property="og:title" content="{{ if .IsHome }}{{ $owner.name }}{{ else }}{{ .Title }}{{ end }}" />
+  <meta property="og:description" content="{{ $desc | plainify | htmlUnescape | truncate 200 }}" />
+  <meta property="og:url" content="{{ .Permalink }}" />
+  <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
+  {{ with $owner.twitter }}<meta name="twitter:site" content="@{{ . }}" />{{ end }}
+  <meta name="twitter:card" content="summary" />
+
+  {{/* Favicon: owner's initials on the accent colour (static/) */}}
+  <link rel="icon" href="{{ "favicon.ico" | relURL }}" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ "favicon-32x32.png" | relURL }}" />
+  <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}" />
+
+  {{/* Self-hosted fonts (no CDN): Raleway for headings, Source Sans 3 for text */}}
+  <link rel="preload" href="{{ "fonts/source-sans-3-latin-400-normal.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="{{ "fonts/raleway-latin-800-normal.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
+  <style>
+    {{- range slice (slice "Raleway" "raleway-latin-400-normal" "400" "normal") (slice "Raleway" "raleway-latin-700-normal" "700" "normal") (slice "Raleway" "raleway-latin-800-normal" "800" "normal") (slice "Source Sans 3" "source-sans-3-latin-400-normal" "400" "normal") (slice "Source Sans 3" "source-sans-3-latin-400-italic" "400" "italic") (slice "Source Sans 3" "source-sans-3-latin-600-normal" "600" "normal") (slice "Source Sans 3" "source-sans-3-latin-700-normal" "700" "normal") }}
+    @font-face{font-family:"{{ index . 0 }}";src:url("{{ printf "fonts/%s.woff2" (index . 1) | relURL }}") format("woff2");font-weight:{{ index . 2 }};font-style:{{ index . 3 }};font-display:swap}
+    {{- end }}
+  </style>
+
+  {{/* Hugo Blox Tailwind pipeline + colour theme */}}
+  {{ with resources.Get "css/themes/custom.css" }}{{ with . | minify }}<link rel="stylesheet" href="{{ .RelPermalink }}" />{{ end }}{{ end }}
+  {{ with (templates.Defer (dict "key" "tailwind-css")) }}
+    {{ partial "css.html" . }}
+  {{ end }}
+
+  {{/* Project stylesheet (all overrides live here) */}}
+  {{ with resources.Get "css/custom.css" }}
+    {{ $styles := . | minify | fingerprint "sha256" }}
+    <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" />
+  {{ end }}
+
+  {{ with .OutputFormats.Get "RSS" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}" />{{ end }}
+
+  {{ partial "scholarly_meta.html" . }}
+  {{ partial "mysite_meta.html" . }}
+</head>

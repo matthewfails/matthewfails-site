@@ -1,0 +1,24 @@
+{{/* Returns a BibTeX entry string for a writings page. */}}
+{{- $p := . -}}
+{{- $t := $p.Params.publication_types | default slice -}}
+{{- $slug := path.Base (path.Dir $p.File.Path) -}}
+{{- $first := index (last 1 (split (index ($p.Params.authors | default (slice "Anon")) 0) " ")) 0 -}}
+{{- $key := printf "%s%d%s" (lower $first) $p.Date.Year (index (split $slug "-") 0) | replaceRE `[^A-Za-z0-9]` "" -}}
+{{- $type := "article" -}}
+{{- if in $t "data" }}{{ $type = "misc" }}{{ else if eq $p.Section "talk" }}{{ $type = "inproceedings" }}{{ else if in $t "book" }}{{ $type = "book" }}{{ end -}}
+{{- $venue := replaceRE `\s+\d.*$` "" ($p.Params.publication | default "") -}}
+{{- $fields := slice (printf "  title = {%s}" $p.Title) (printf "  author = {%s}" (delimit ($p.Params.authors | default slice) " and ")) (printf "  year = {%d}" $p.Date.Year) -}}
+{{- if eq $type "article" }}{{ with $venue }}{{ $fields = $fields | append (printf "  journal = {%s}" .) }}{{ end }}{{ end -}}
+{{- if eq $type "misc" }}{{ $fields = $fields | append (printf "  howpublished = {%s}" ($venue | default "Harvard Dataverse")) }}{{ end -}}
+{{- if eq $type "inproceedings" }}{{ with $p.Params.event }}{{ $fields = $fields | append (printf "  booktitle = {%s}" .) }}{{ end }}{{ end -}}
+{{- with $p.Params.publication -}}
+  {{- with findRESubmatch `\s(\d+)\s*(?:\((\w+)\))?\s*:\s*([\w\d–-]+)` . 1 -}}
+    {{- $m := index . 0 -}}
+    {{- $fields = $fields | append (printf "  volume = {%s}" (index $m 1)) -}}
+    {{- with index $m 2 }}{{ $fields = $fields | append (printf "  number = {%s}" .) }}{{ end -}}
+    {{- $fields = $fields | append (printf "  pages = {%s}" (replace (index $m 3) "–" "--")) -}}
+  {{- end -}}
+{{- end -}}
+{{- with $p.Params.doi }}{{ $fields = $fields | append (printf "  doi = {%s}" .) }}{{ end -}}
+{{- $fields = $fields | append (printf "  url = {%s}" $p.Permalink) -}}
+{{- return printf "@%s{%s,\n%s\n}" $type $key (delimit $fields ",\n") -}}

@@ -1,0 +1,3 @@
+{{- $to := .Params.redirect_to -}}
+{{- $u := cond (strings.HasPrefix $to "http") $to ($to | relURL) -}}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Redirecting…</title><link rel="canonical" href="{{ $u }}"><meta http-equiv="refresh" content="0; url={{ $u }}"></head><body><p><a href="{{ $u }}">{{ $u }}</a></p></body></html>

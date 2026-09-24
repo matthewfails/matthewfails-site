@@ -1,0 +1,7 @@
+{{/* Alphabetical list of co-author names, each linked via data/coauthors.json when a link is known. */}}
+<ul class="people-list">
+  {{- range sort . "key" }}
+  {{- $n := .name }}
+  <li>{{ with index site.Data.coauthors $n }}<a href="{{ .url }}">{{ $n }}</a>{{ else }}{{ $n }}<!-- FLAG FOR OWNER: no verified web page for {{ $n }}; add one to data/coauthors.json if available -->{{ end }}</li>
+  {{- end }}
+</ul>

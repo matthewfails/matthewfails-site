@@ -1,0 +1,250 @@
+{{ define "main" }}
+{{- $o := site.Params.owner -}}
+{{- $pages := where (where site.RegularPages "Section" "in" (slice "publication" "talk" "software")) "Params.private" "!=" true -}}
+{{- $pages = $pages.ByDate.Reverse -}}
+{{- $areas := slice -}}
+{{- range site.Data.research_areas.groups }}{{ range .areas }}{{ $areas = $areas | append . }}{{ end }}{{ end -}}
+
+{{/* Serialize every entry once; the same fields drive the server-rendered rows and the client-side filters. */}}
+{{- $entries := slice -}}
+{{- $years := slice -}}
+{{- $tabsWithContent := slice -}}
+{{- range $i, $p := $pages -}}
+  {{- $tab := partial "functions/work_tab.html" $p -}}
+  {{- $tabsWithContent = $tabsWithContent | append $tab -}}
+  {{- $years = $years | append $p.Date.Year -}}
+  {{- $entries = $entries | append (dict
+      "i" $i
+      "title" $p.Title
+      "slug" (path.Base (path.Dir $p.File.Path))
+      "url" $p.RelPermalink
+      "date" ($p.Date.Format "2006-01-02")
+      "year" $p.Date.Year
+      "authors" ($p.Params.authors | default slice)
+      "publication" (or $p.Params.publication $p.Params.event "")
+      "abstract" ($p.Params.abstract | default "" | plainify | htmlUnescape)
+      "pubTypes" ($p.Params.publication_types | default slice)
+      "areas" ($p.Params.research_areas | default slice)
+      "tab" $tab
+      "bibtex" (partial "functions/bibtex.html" $p)
+  ) -}}
+{{- end -}}
+{{- $years = $years | uniq | sort | collections.Reverse -}}
+
+<div class="writings container-wide">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ "" | relURL }}">{{ i18n "home" }}</a> <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ .Title }}</span>
+  </nav>
+  <header class="page-head">
+    <h1>{{ .Title }}</h1>
+    {{ with .Content }}<div class="page-intro">{{ . }}</div>{{ end }}
+    <p class="inline-links">
+      <a href="{{ $o.scholar }}">{{ i18n "google_scholar" }}</a>
+      <a href="{{ $o.cv | relURL }}">{{ i18n "download_cv" }}</a>
+      <a href="{{ $o.dataverse }}">{{ i18n "dataverse_link" }}</a>
+    </p>
+  </header>
+
+  <nav class="pub-tabs" role="tablist" aria-label="{{ i18n "writings" }}">
+    <button class="tab-btn active" type="button" data-tab="all" role="tab" aria-selected="true">{{ i18n "all" }}</button>
+    {{- range .Params.tabs }}
+    {{- if in $tabsWithContent .id }}
+    <button class="tab-btn" type="button" data-tab="{{ .id }}" role="tab" aria-selected="false">{{ i18n .label }}</button>
+    {{- end }}
+    {{- end }}
+  </nav>
+
+  <div class="pub-layout">
+    <aside class="pub-filters" aria-label="Filters">
+      <label class="filter-label" for="pub-q">{{ i18n "filter_search" }}</label>
+      <input id="pub-q" type="search" autocomplete="off">
+
+      <label class="filter-label" for="pub-area">{{ i18n "filter_area" }}</label>
+      <select id="pub-area">
+        <option value="">{{ i18n "filter_area_all" }}</option>
+        {{- range $areas }}
+        <option value="{{ .slug }}">{{ .title }}</option>
+        {{- end }}
+      </select>
+
+      <fieldset id="pub-types" class="filter-group" hidden>
+        <legend class="filter-label">{{ i18n "filter_type" }}</legend>
+        <div class="check-list">
+          {{- range slice "journal_article" "book_review" "essay" "data" "presentation" }}
+          <label class="check-row" data-type-row="{{ . }}"><input type="checkbox" value="{{ . }}"> <span>{{ i18n (printf "type_%s" .) }}</span></label>
+          {{- end }}
+        </div>
+      </fieldset>
+
+      <fieldset class="filter-group">
+        <legend class="filter-label">{{ i18n "filter_year" }}</legend>
+        <div class="check-list check-list--scroll" id="pub-years">
+          {{- range $years }}
+          <label class="check-row"><input type="checkbox" value="{{ . }}"> <span>{{ . }}</span></label>
+          {{- end }}
+        </div>
+      </fieldset>
+
+      <button type="button" class="btn btn-secondary" id="pub-reset">{{ i18n "reset" }}</button>
+    </aside>
+
+    <section class="pub-main" aria-live="polite">
+      <div class="pub-toolbar">
+        <p class="result-count">{{ len $entries }} {{ i18n "results_of" }} {{ len $entries }} {{ i18n "results" }}</p>
+        <label class="sr-only" for="pub-sort">{{ i18n "sort" }}</label>
+        <select id="pub-sort">
+          <option value="newest">{{ i18n "sort_newest" }}</option>
+          <option value="oldest">{{ i18n "sort_oldest" }}</option>
+          <option value="az">{{ i18n "sort_title_az" }}</option>
+          <option value="za">{{ i18n "sort_title_za" }}</option>
+        </select>
+        <button type="button" class="btn btn-cite" id="pub-bibtex">{{ i18n "download_bibtex" }}</button>
+      </div>
+
+      <div class="pub-list" id="pub-list">
+        {{- range $i, $p := $pages }}
+        {{- $e := index $entries $i }}
+        <article class="pub-item pub-list-item" data-i="{{ $i }}" data-tab="{{ $e.tab }}" data-year="{{ $e.year }}" data-types='{{ $e.pubTypes | jsonify }}' data-areas='{{ $e.areas | jsonify }}'>
+          <span class="kind kind--{{ replace (partial "functions/work_kind.html" $p) "kind_" "" }}">[{{ i18n (partial "functions/work_kind.html" $p) }}]</span>
+          <span class="view-citation">{{ partial "citation_line.html" (dict "page" $p "link" true) }}</span>
+          {{- with $p.Params.abstract }}
+          <details class="inline-abstract"><summary>{{ i18n "abstract" }}</summary><p>{{ . | plainify }}</p></details>
+          {{- end }}
+        </article>
+        {{- end }}
+      </div>
+      <p class="no-results" hidden>{{ i18n "no_results" }}</p>
+      <p class="work-note"><span aria-hidden="true">*</span> {{ i18n "student_note" }}</p>
+    </section>
+  </div>
+</div>
+
+<script>
+(function() {
+  var data = {{ $entries | jsonify | safeJS }};
+  var tabs = document.querySelectorAll('.tab-btn');
+  var list = document.getElementById('pub-list');
+  var items = Array.prototype.slice.call(list.querySelectorAll('.pub-item'));
+  var countEl = document.querySelector('.result-count');
+  var qEl = document.getElementById('pub-q'), areaEl = document.getElementById('pub-area'),
+      sortEl = document.getElementById('pub-sort'), typeBox = document.getElementById('pub-types'),
+      noRes = document.querySelector('.no-results');
+  var yearBoxes = document.querySelectorAll('#pub-years input'), typeBoxes = typeBox.querySelectorAll('input');
+  var state = { tab: 'all', q: '', area: '', years: [], types: [], sort: 'newest' };
+  var validTabs = Array.prototype.map.call(tabs, function(b) { return b.dataset.tab; });
+
+  function norm(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  data.forEach(function(d) { d.hay = norm([d.title, d.authors.join(' '), d.publication, d.abstract].join(' ')); });
+
+  function readHash() {
+    var parts = location.hash.replace(/^#/, '').split('&');
+    var s = { tab: 'all', q: '', area: '', years: [], types: [], sort: 'newest' };
+    if (parts[0] && validTabs.indexOf(parts[0]) !== -1) s.tab = parts[0];
+    parts.slice(1).concat(parts[0].indexOf('=') > -1 ? [parts[0]] : []).forEach(function(kv) {
+      var i = kv.indexOf('='); if (i < 0) return;
+      var k = kv.slice(0, i), v = decodeURIComponent(kv.slice(i + 1));
+      if (k === 'q') s.q = v; else if (k === 'area') s.area = v; else if (k === 'sort') s.sort = v;
+      else if (k === 'years') s.years = v.split(',').filter(Boolean);
+      else if (k === 'types') s.types = v.split(',').filter(Boolean);
+      else if (k === 'tab' && validTabs.indexOf(v) > -1) s.tab = v;
+    });
+    return s;
+  }
+  function writeHash(push) {
+    var h = '#' + state.tab;
+    if (state.area) h += '&area=' + encodeURIComponent(state.area);
+    if (state.q) h += '&q=' + encodeURIComponent(state.q);
+    if (state.years.length) h += '&years=' + state.years.join(',');
+    if (state.types.length) h += '&types=' + state.types.join(',');
+    if (state.sort !== 'newest') h += '&sort=' + state.sort;
+    if (h === location.hash) return;
+    if (push) history.pushState(null, '', h); else history.replaceState(null, '', h);
+  }
+
+  function visibleEntries() {
+    var q = norm(state.q).trim(), terms = q ? q.split(/\s+/) : [];
+    return data.filter(function(d) {
+      if (state.tab !== 'all' && d.tab !== state.tab) return false;
+      if (state.area && d.areas.indexOf(state.area) === -1) return false;
+      if (state.years.length && state.years.indexOf(String(d.year)) === -1) return false;
+      if (state.types.length && !d.pubTypes.some(function(t) { return state.types.indexOf(t) > -1; })) return false;
+      return terms.every(function(t) { return d.hay.indexOf(t) > -1; });
+    });
+  }
+
+  function render() {
+    // Tabs
+    tabs.forEach(function(btn) {
+      var on = btn.dataset.tab === state.tab;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    // Type sub-filter: only when the tab has more than one type
+    var inTab = data.filter(function(d) { return state.tab === 'all' || d.tab === state.tab; });
+    var present = {};
+    inTab.forEach(function(d) { d.pubTypes.forEach(function(t) { present[t] = 1; }); });
+    var nTypes = 0;
+    typeBox.querySelectorAll('[data-type-row]').forEach(function(row) {
+      var has = !!present[row.dataset.typeRow]; row.hidden = !has; if (has) nTypes++;
+    });
+    typeBox.hidden = nTypes < 2;
+    // Controls reflect state
+    qEl.value = state.q; areaEl.value = state.area; sortEl.value = state.sort;
+    yearBoxes.forEach(function(b) { b.checked = state.years.indexOf(b.value) > -1; });
+    typeBoxes.forEach(function(b) { b.checked = state.types.indexOf(b.value) > -1; });
+    // Filter + sort
+    var vis = visibleEntries(), show = {};
+    vis.forEach(function(d) { show[d.i] = 1; });
+    var order = data.slice().sort(function(a, b) {
+      if (state.sort === 'oldest') return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
+      if (state.sort === 'az') return a.title.localeCompare(b.title);
+      if (state.sort === 'za') return b.title.localeCompare(a.title);
+      return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
+    });
+    order.forEach(function(d) {
+      var el = items[d.i];
+      el.style.display = show[d.i] ? '' : 'none';
+      list.appendChild(el);
+    });
+    countEl.textContent = vis.length + ' {{ i18n "results_of" }} ' + items.length + ' {{ i18n "results" }}';
+    noRes.hidden = vis.length > 0;
+  }
+
+  function update(changes, push) {
+    for (var k in changes) state[k] = changes[k];
+    writeHash(push); render();
+  }
+
+  // Tab buttons filter the list
+  tabs.forEach(function(btn) {
+    btn.addEventListener('click', function() { update({ tab: btn.dataset.tab, types: [] }, true); });
+  });
+  var qTimer;
+  qEl.addEventListener('input', function() { clearTimeout(qTimer); qTimer = setTimeout(function() { update({ q: qEl.value }, false); }, 120); });
+  areaEl.addEventListener('change', function() { update({ area: areaEl.value }, true); });
+  sortEl.addEventListener('change', function() { update({ sort: sortEl.value }, true); });
+  yearBoxes.forEach(function(b) { b.addEventListener('change', function() {
+    update({ years: Array.prototype.filter.call(yearBoxes, function(x) { return x.checked; }).map(function(x) { return x.value; }) }, true);
+  }); });
+  typeBoxes.forEach(function(b) { b.addEventListener('change', function() {
+    update({ types: Array.prototype.filter.call(typeBoxes, function(x) { return x.checked; }).map(function(x) { return x.value; }) }, true);
+  }); });
+  document.getElementById('pub-reset').addEventListener('click', function() {
+    update({ q: '', area: '', years: [], types: [], sort: 'newest' }, true);
+  });
+  document.getElementById('pub-bibtex').addEventListener('click', function() {
+    var bib = visibleEntries().map(function(d) { return d.bibtex; }).join('\n\n') + '\n';
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([bib], { type: 'application/x-bibtex' }));
+    a.download = 'fails-writings.bib'; document.body.appendChild(a); a.click();
+    setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+  });
+  window.addEventListener('popstate', function() { state = readHash(); render(); });
+  window.addEventListener('hashchange', function() { state = readHash(); render(); });
+
+  // On load: activate the tab/filters in the hash immediately
+  state = readHash(); render();
+})();
+</script>
+{{ end }}

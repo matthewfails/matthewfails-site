@@ -1,0 +1,21 @@
+{{ define "main" }}
+<article class="page container-narrow" data-pagefind-body>
+  <nav class="breadcrumb" aria-label="Breadcrumb" data-pagefind-ignore>
+    <a href="{{ "" | relURL }}">{{ i18n "home" }}</a> <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ .Title }}</span>
+  </nav>
+  <header class="page-head{{ if .Params.show_photo }} page-head--photo{{ end }}">
+    {{- if .Params.show_photo }}
+    {{- $o := site.Params.owner }}
+    {{- with resources.GetMatch "media/bio-photo.*" }}{{ $r := .Fill "320x320 Center webp" }}
+    <img class="page-photo" src="{{ $r.RelPermalink }}" width="160" height="160" alt="Portrait of {{ $o.name }}, {{ $o.institution }}">
+    {{- else }}<div class="monogram monogram--sm" role="img" aria-label="{{ $o.name }}">{{ $o.initials }}</div>{{ end }}
+    {{- end }}
+    <div>
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.subtitle }}<p class="page-subtitle">{{ . }}</p>{{ end }}
+    </div>
+  </header>
+  <div class="prose">{{ .Content }}</div>
+</article>
+{{ end }}

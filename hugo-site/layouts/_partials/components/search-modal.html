@@ -1,0 +1,56 @@
+{{/* Pagefind search modal. Pagefind (~200KB WASM) loads only on first open. Ctrl/Cmd-K opens, Esc closes,
+     arrow keys move through results. Falls back to a Google site: search if Pagefind is unavailable. */}}
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-modal-label" hidden data-pagefind-ignore>
+  <div class="search-backdrop" data-search-close></div>
+  <div class="search-panel">
+    <form class="search-form" role="search" onsubmit="return false">
+      <label id="search-modal-label" for="search-input" class="sr-only">{{ i18n "search_placeholder" }}</label>
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+      <input id="search-input" type="search" autocomplete="off" placeholder="{{ i18n "search_placeholder" }}" aria-controls="search-results">
+      <kbd class="search-esc" data-search-close>Esc</kbd>
+    </form>
+    <ul id="search-results" class="search-results" role="listbox" aria-label="{{ i18n "search" }}"></ul>
+    <p class="search-fallback" hidden><a id="search-google" href="#">{{ i18n "search_fallback" }}</a></p>
+  </div>
+</div>
+<script>
+(function(){
+  var modal=document.getElementById('search-modal'), input=document.getElementById('search-input'),
+      list=document.getElementById('search-results'), fb=modal.querySelector('.search-fallback'),
+      google=document.getElementById('search-google'), pf=null, pfFailed=false, lastFocus=null, sel=-1, timer=null;
+  var site={{ site.BaseURL | replaceRE "^https?://" "" | jsonify | safeJS }};
+  function loadPF(){
+    if(pf||pfFailed) return Promise.resolve(pf);
+    return import({{ "pagefind/pagefind.js" | relURL | jsonify | safeJS }}).then(function(m){pf=m;pf.init&&pf.init();return pf;})
+      .catch(function(){pfFailed=true;return null;});
+  }
+  function open(){ lastFocus=document.activeElement; modal.hidden=false; document.body.classList.add('search-open'); input.focus(); input.select(); loadPF(); }
+  function close(){ modal.hidden=true; document.body.classList.remove('search-open'); if(lastFocus) lastFocus.focus(); }
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function setSel(i){ var items=list.querySelectorAll('a'); if(!items.length) return; sel=(i+items.length)%items.length;
+    items.forEach(function(a,j){a.setAttribute('aria-selected',j===sel?'true':'false');}); items[sel].focus(); }
+  function run(q){
+    google.href='https://www.google.com/search?q='+encodeURIComponent('site:'+site+' '+q);
+    if(!q){list.innerHTML='';fb.hidden=true;return;}
+    loadPF().then(function(p){
+      if(!p){ list.innerHTML=''; fb.hidden=false; return; }
+      p.search(q).then(function(r){
+        return Promise.all(r.results.slice(0,10).map(function(x){return x.data();}));
+      }).then(function(rs){
+        sel=-1; fb.hidden=rs.length>0;
+        list.innerHTML=rs.map(function(d){return '<li><a role="option" href="'+esc(d.url)+'"><strong>'+esc((d.meta&&d.meta.title)||d.url)+'</strong><span>'+d.excerpt+'</span></a></li>';}).join('');
+      });
+    });
+  }
+  document.querySelectorAll('[data-search-open]').forEach(function(b){b.addEventListener('click',open);});
+  modal.querySelectorAll('[data-search-close]').forEach(function(b){b.addEventListener('click',close);});
+  input.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(function(){run(input.value.trim());},150);});
+  document.addEventListener('keydown',function(e){
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault(); modal.hidden?open():close(); return;}
+    if(modal.hidden) return;
+    if(e.key==='Escape'){e.preventDefault();close();}
+    else if(e.key==='ArrowDown'){e.preventDefault();setSel(sel+1);}
+    else if(e.key==='ArrowUp'){e.preventDefault(); if(sel<=0){sel=-1;input.focus();} else setSel(sel-1);}
+  });
+})();
+</script>

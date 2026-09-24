@@ -1,0 +1,29 @@
+{{/* Google Scholar citation_* tags + ScholarlyArticle/Book/CreativeWork JSON-LD for writings and talks. */}}
+{{- if and .IsPage (in (slice "publication" "talk" "software") .Section) (not .Params.private) -}}
+  {{- $types := .Params.publication_types | default slice -}}
+  {{- $pdf := "" -}}
+  {{- range .Params.links }}{{ if and (not $pdf) (strings.HasSuffix (lower .url) ".pdf") (not (strings.HasPrefix .url "http")) }}{{ $pdf = .url | absURL }}{{ end }}{{ end -}}
+  <meta name="citation_title" content="{{ .Title }}">
+  {{- range .Params.authors }}
+  <meta name="citation_author" content="{{ . }}">
+  {{- end }}
+  <meta name="citation_publication_date" content="{{ .Date.Format "2006/01/02" }}">
+  {{- with .Params.publication }}
+  <meta name="citation_journal_title" content="{{ replaceRE `\s+\d.*$` "" . }}">
+  {{- end }}
+  {{- with $pdf }}
+  <meta name="citation_pdf_url" content="{{ . }}">
+  {{- end }}
+  {{- with .Params.doi }}
+  <meta name="citation_doi" content="{{ . }}">
+  {{- end }}
+  {{- $type := "ScholarlyArticle" -}}
+  {{- if in $types "book" }}{{ $type = "Book" }}{{ else if eq .Section "talk" }}{{ $type = "CreativeWork" }}{{ else if in $types "data" }}{{ $type = "Dataset" }}{{ end -}}
+  {{- $authors := slice -}}
+  {{- range .Params.authors }}{{ $authors = $authors | append (dict "@type" "Person" "name" .) }}{{ end -}}
+  {{- $ld := dict "@context" "https://schema.org" "@type" $type "headline" .Title "name" .Title "author" $authors "datePublished" (.Date.Format "2006-01-02") "url" .Permalink -}}
+  {{- with .Params.abstract }}{{ $ld = merge $ld (dict "abstract" (. | plainify | htmlUnescape)) }}{{ end -}}
+  {{- with .Params.doi }}{{ $ld = merge $ld (dict "identifier" (printf "https://doi.org/%s" .) "sameAs" (printf "https://doi.org/%s" .)) }}{{ end -}}
+  {{- with .Params.publication }}{{ $ld = merge $ld (dict "isPartOf" (dict "@type" "Periodical" "name" (replaceRE `\s+\d.*$` "" .))) }}{{ end -}}
+  <script type="application/ld+json">{{ $ld | jsonify | safeJS }}</script>
+{{- end -}}

@@ -1,0 +1,19 @@
+{{ define "main" }}
+{{- $items := (where site.RegularPages "Section" "software").ByDate.Reverse -}}
+<div class="container-narrow">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ "" | relURL }}">{{ i18n "home" }}</a> <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ .Title }}</span>
+  </nav>
+  <header class="page-head"><h1>{{ .Title }}</h1>{{ with .Content }}<div class="page-intro">{{ . }}</div>{{ end }}</header>
+  <div class="pub-list">
+    {{- range $items }}
+    <article class="pub-list-item card">
+      <h2 class="card-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      <p class="view-citation">{{ partial "citation_line.html" (dict "page" . "link" false) }}</p>
+      {{ with .Params.abstract }}<p>{{ . | plainify | truncate 280 }}</p>{{ end }}
+    </article>
+    {{- end }}
+  </div>
+</div>
+{{ end }}

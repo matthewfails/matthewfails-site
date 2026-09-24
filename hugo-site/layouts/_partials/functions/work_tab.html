@@ -1,0 +1,15 @@
+{{/* Returns the Writings-page tab id for a page: data/writings_legacy_map.json first, then publication_types. */}}
+{{- $slug := path.Base (path.Dir .File.Path) -}}
+{{- $tab := "" -}}
+{{- with index (site.Data.writings_legacy_map.entries | default dict) $slug }}{{ $tab = .tab }}{{ end -}}
+{{- if not $tab -}}
+  {{- $t := .Params.publication_types | default slice -}}
+  {{- if in $t "data" }}{{ $tab = "data" }}
+  {{- else if or (in $t "book_review") (in $t "essay") }}{{ $tab = "reviews-essays" }}
+  {{- else if or (in $t "presentation") (eq .Section "talk") }}{{ $tab = "presentations" }}
+  {{- else if or (in $t "book") (in $t "book_chapter") }}{{ $tab = "book" }}
+  {{- else if or (in $t "report") (in $t "working_paper") }}{{ $tab = "working-papers" }}
+  {{- else if eq .Section "software" }}{{ $tab = "software" }}
+  {{- else }}{{ $tab = "articles" }}{{ end -}}
+{{- end -}}
+{{- return $tab -}}

@@ -1,0 +1,136 @@
+{
+  "entries": {
+    "term-limit-evasion": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "term-limit-evasion-data": {
+      "tab": "data",
+      "legacy": "Dataverse"
+    },
+    "pain-at-the-pump": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "pain-at-the-pump-data": {
+      "tab": "data",
+      "legacy": "Dataverse"
+    },
+    "fuel-subsidy-regimes": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "fuel-subsidy-regimes-data": {
+      "tab": "data",
+      "legacy": "Dataverse"
+    },
+    "oil-child-mortality": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "oil-child-mortality-data": {
+      "tab": "data",
+      "legacy": "Dataverse"
+    },
+    "oil-personalization": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "oil-personalization-data": {
+      "tab": "data",
+      "legacy": "Dataverse"
+    },
+    "fuel-subsidies-democratization": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "fuel-subsidies-democratization-data": {
+      "tab": "data",
+      "legacy": "Dataverse"
+    },
+    "resource-diversification-autocratic-collapse": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "resource-diversification-autocratic-collapse-data": {
+      "tab": "data",
+      "legacy": "Dataverse"
+    },
+    "natural-resources-fiscal-health": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "sovereign-wealth-funds": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "sovereign-wealth-funds-data": {
+      "tab": "data",
+      "legacy": "Dataverse"
+    },
+    "electoral-autocracies-poor": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "electoral-autocracies-poor-data": {
+      "tab": "data",
+      "legacy": "Dataverse"
+    },
+    "unpacking-autocracy-imf": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "unpacking-autocracy-imf-data": {
+      "tab": "data",
+      "legacy": "Dataverse"
+    },
+    "inequality-foreign-investment-risk": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "inequality-foreign-investment-risk-data": {
+      "tab": "data",
+      "legacy": "Dataverse"
+    },
+    "leader-turnover-political-risk": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "colonialism-property-rights": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "colonialism-property-rights-data": {
+      "tab": "data",
+      "legacy": "Dataverse"
+    },
+    "mass-attitudes-democratic-deepening": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "substantive-democratization-africa": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "reform-resistance-senegal": {
+      "tab": "articles",
+      "legacy": "Research & CV"
+    },
+    "colonialism-and-democratization": {
+      "tab": "reviews-essays",
+      "legacy": "Editor-reviewed and Invited Essays"
+    },
+    "review-power-grab": {
+      "tab": "reviews-essays",
+      "legacy": "Book Reviews"
+    },
+    "review-musevenis-uganda": {
+      "tab": "reviews-essays",
+      "legacy": "Book Reviews"
+    },
+    "review-turning-points-african-democracy": {
+      "tab": "reviews-essays",
+      "legacy": "Book Reviews"
+    }
+  }
+}

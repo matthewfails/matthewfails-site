@@ -1,0 +1,32 @@
+{{- $o := site.Params.owner -}}
+<footer class="site-footer" data-pagefind-ignore>
+  <div class="footer-inner">
+    <div class="footer-id">
+      <p class="footer-name">{{ $o.name }}</p>
+      <p>{{ $o.title }}<br><a href="{{ $o.institution_url }}">{{ $o.institution }}</a></p>
+      <p>{{ i18n "email" }}: <a href="mailto:{{ $o.email }}">{{ $o.email }}</a></p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <ul>
+        <li><a href="{{ "" | relURL }}">{{ i18n "home" }}</a></li>
+        {{- range site.Menus.main }}
+        {{- $url := .URL }}
+        <li><a href="{{ $url }}">{{ .Name }}</a></li>
+        {{- end }}
+      </ul>
+      <ul>
+        <li><a href="{{ $o.scholar }}">{{ i18n "google_scholar" }}</a></li>
+        <li><a href="{{ $o.dataverse }}">{{ i18n "dataverse" }}</a></li>
+        {{ with $o.linkedin }}<li><a href="{{ . }}">LinkedIn</a></li>{{ end }}
+        <li><a href="{{ $o.cv | relURL }}">{{ i18n "download_cv" }}</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; {{ now.Year }} {{ $o.name }}</p>
+    {{- $mysite := site.Params.mysite | default dict }}
+    {{- if ne $mysite.credit false }}
+    <p class="footer-credit">Created using <a href="https://garyking.org/mysite">GaryKing.org/mysite</a></p>
+    {{- end }}
+  </div>
+</footer>

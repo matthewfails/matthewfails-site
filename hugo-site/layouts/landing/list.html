@@ -1,0 +1,27 @@
+{{ define "main" }}
+{{- $o := site.Params.owner -}}
+{{- $photo := resources.GetMatch "media/bio-photo.*" -}}
+<section class="hero container-wide" aria-label="Introduction">
+  <div class="hero-photo">
+    {{- with $photo }}
+    {{- $r := .Fill "400x400 Center webp" }}
+    <img src="{{ $r.RelPermalink }}" width="200" height="200" alt="Portrait of {{ $o.name }}, {{ $o.institution }}">
+    {{- else }}
+    <div class="monogram" role="img" aria-label="{{ $o.name }}">{{ $o.initials }}</div>
+    {{- end }}
+  </div>
+  <div class="hero-text">
+    <h1>{{ $o.name }}</h1>
+    <p class="hero-role">{{ $o.title }}<br><a href="{{ $o.institution_url }}">{{ $o.institution }}</a></p>
+    <div class="hero-intro">{{ .Content }}</div>
+    <p class="hero-actions">
+      <a class="btn btn-primary" href="{{ "contact/" | relURL }}">{{ i18n "contact" }}</a>
+      <a class="btn btn-primary" href="{{ "publication/" | relURL }}">{{ i18n "writings_research" }}</a>
+      <a class="btn btn-primary" href="{{ $o.cv | relURL }}">{{ i18n "download_cv" }}</a>
+      <a class="btn btn-primary" href="{{ $o.scholar }}">{{ i18n "google_scholar" }}</a>
+      <a class="btn btn-primary" href="{{ $o.dataverse }}">{{ i18n "dataverse" }}</a>
+    </p>
+  </div>
+</section>
+
+{{ end }}

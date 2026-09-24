@@ -1,0 +1,35 @@
+{{/* Brand (owner's name, links home) left; nav links right; search as a magnifying-glass icon; hamburger on mobile. */}}
+{{- $current := . -}}
+<nav class="navbar" aria-label="Main">
+  <a class="navbar-brand" href="{{ "" | relURL }}">{{ site.Params.header.navbar.logo.text | default site.Title }}</a>
+  <button class="navbar-toggle" type="button" aria-controls="navbar-menu" aria-expanded="false" aria-label="Open menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <div class="navbar-menu" id="navbar-menu">
+    <ul class="navbar-links">
+      {{- range site.Menus.main }}
+      {{- $url := .URL -}}
+      {{- $href := $url -}}{{/* Hugo already applies the baseURL path to menu URLs */}}
+      {{- $active := and (not (strings.Contains $url "#")) (strings.HasPrefix $current.RelPermalink $href) -}}
+      <li><a href="{{ $href }}"{{ if $active }} class="active" aria-current="page"{{ end }}>{{ .Name }}</a></li>
+      {{- end }}
+    </ul>
+    {{ if site.Params.header.navbar.show_search }}
+    <button class="navbar-search" type="button" data-search-open aria-label="{{ i18n "search" }} (Ctrl+K)" title="{{ i18n "search" }} (Ctrl+K)">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg><span class="navbar-search-label" aria-hidden="true">{{ i18n "search" }}</span>
+    </button>
+    {{ end }}
+  </div>
+</nav>
+<script>
+(function(){
+  var btn=document.querySelector('.navbar-toggle'), nav=document.querySelector('.navbar');
+  if(!btn) return;
+  btn.addEventListener('click',function(){
+    var open=nav.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded',open?'true':'false');
+    btn.setAttribute('aria-label',open?'Close menu':'Open menu');
+  });
+  document.querySelectorAll('.navbar-links a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('is-open');btn.setAttribute('aria-expanded','false');});});
+})();
+</script>

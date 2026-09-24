@@ -1,0 +1,115 @@
+{{/*
+  Automatic "See Also" cross-linking (runs at build time on every publication/talk/software page).
+  Priority 1  explicit related_* front matter (+ reverse links: datasets whose related_paper points here)
+  Priority 1b see_also: [{url,title}] or [{section,slug}]
+  Priority 1c dataverse_url (or a Dataverse URL inside the abstract) -> [Dataset] row
+  Priority 2  siblings sharing a research area (data/research_areas.json)
+  Priority 3  scoring backfill: +2 per shared title token, +1 per shared co-author, +2 per shared tag
+  Cap 8, sorted by score then year; titles de-duplicated; response/reply papers pin their subject.
+*/}}
+{{- $self := . -}}
+{{- $owner := site.Params.owner.name -}}
+{{- $mySlug := path.Base (path.Dir .File.Path) -}}
+{{- $pool := where (where site.RegularPages "Section" "in" (slice "publication" "talk" "software")) "Params.private" "!=" true -}}
+{{- $bySlug := dict -}}
+{{- range $pool }}{{ $bySlug = merge $bySlug (dict (path.Base (path.Dir .File.Path)) .) }}{{ end -}}
+{{- $picks := slice -}}
+{{- $used := slice $self.RelPermalink -}}
+
+{{/* Priority 1: explicit */}}
+{{- $explicit := slice -}}
+{{- range slice "related_papers" "related_talks" "related_software" "related_datasets" -}}
+  {{- range ($self.Param .) | default slice }}{{ $explicit = $explicit | append . }}{{ end -}}
+{{- end -}}
+{{- with $self.Params.related_paper }}{{ $explicit = $explicit | append . }}{{ end -}}
+{{- with $self.Params.related_dataset }}{{ $explicit = $explicit | append . }}{{ end -}}
+{{- range $explicit -}}
+  {{- with index $bySlug . -}}
+    {{- if not (in $used .RelPermalink) }}{{ $picks = $picks | append (dict "url" .RelPermalink "title" .Title "kind" (partial "functions/work_kind.html" .) "score" 1000 "year" .Date.Year) }}{{ $used = $used | append .RelPermalink }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- range where $pool "Params.related_paper" $mySlug -}}
+  {{- if not (in $used .RelPermalink) }}{{ $picks = $picks | append (dict "url" .RelPermalink "title" .Title "kind" (partial "functions/work_kind.html" .) "score" 1000 "year" .Date.Year) }}{{ $used = $used | append .RelPermalink }}{{ end -}}
+{{- end -}}
+
+{{/* Response / reply / comment papers: pin the subject paper */}}
+{{- if findRE `(?i)^(response to|reply to|comment on|rejoinder)` $self.Title -}}
+  {{- $myT := partialCached "functions/title_tokens.html" $self.Title $self.Title -}}
+  {{- $best := "" }}{{ $bestN := 1 -}}
+  {{- range $pool -}}
+    {{- if ne .RelPermalink $self.RelPermalink -}}
+      {{- $n := len (intersect $myT (partialCached "functions/title_tokens.html" .Title .Title)) -}}
+      {{- if gt $n $bestN }}{{ $best = . }}{{ $bestN = $n }}{{ end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $best }}{{ if not (in $used .RelPermalink) }}{{ $picks = $picks | append (dict "url" .RelPermalink "title" .Title "kind" (partial "functions/work_kind.html" .) "score" 2000 "year" .Date.Year) }}{{ $used = $used | append .RelPermalink }}{{ end }}{{ end -}}
+{{- end -}}
+
+{{/* Book editions: books sharing a base title (", 2nd Edition", ", New Edition" stripped) cross-link */}}
+{{- if in ($self.Params.publication_types | default slice) "book" -}}
+  {{- $base := replaceRE `(?i),?\s*(new|revised|expanded|updated|\d+(st|nd|rd|th))\s+edition\s*$` "" $self.Title -}}
+  {{- range where $pool "Params.publication_types" "intersect" (slice "book") -}}
+    {{- if and (ne .RelPermalink $self.RelPermalink) (eq $base (replaceRE `(?i),?\s*(new|revised|expanded|updated|\d+(st|nd|rd|th))\s+edition\s*$` "" .Title)) (not (in $used .RelPermalink)) -}}
+      {{- $picks = $picks | append (dict "url" .RelPermalink "title" .Title "kind" "kind_book" "score" 1000 "year" .Date.Year) }}{{ $used = $used | append .RelPermalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Priority 1b: see_also */}}
+{{- range $self.Params.see_also -}}
+  {{- if .url }}{{ $picks = $picks | append (dict "url" .url "title" (.title | default .url) "kind" "kind_link" "score" 900 "year" 0 "external" true) -}}
+  {{- else if .slug }}{{ with index $bySlug .slug }}{{ if not (in $used .RelPermalink) }}{{ $picks = $picks | append (dict "url" .RelPermalink "title" .Title "kind" (partial "functions/work_kind.html" .) "score" 900 "year" .Date.Year) }}{{ $used = $used | append .RelPermalink }}{{ end }}{{ end }}{{ end -}}
+{{- end -}}
+
+{{/* Priority 1c: Dataverse */}}
+{{- $dv := $self.Params.dataverse_url -}}
+{{- if and (not $dv) $self.Params.abstract }}{{ with findRE `https?://(dx\.)?doi\.org/10\.7910/DVN/[A-Z0-9]+|https?://dataverse\.harvard\.edu/[^\s"<)]+` $self.Params.abstract 1 }}{{ $dv = index . 0 }}{{ end }}{{ end -}}
+{{- if and $dv (not (in ($self.Params.publication_types | default slice) "data")) -}}
+  {{- $picks = $picks | append (dict "url" $dv "title" ($self.Params.dataverse_name | default (i18n "dataverse_link")) "kind" "kind_dataset" "score" 800 "year" 0 "external" true) -}}
+{{- end -}}
+
+{{/* Priority 2 + 3: siblings and scoring backfill */}}
+{{- $myAreas := $self.Params.research_areas | default slice -}}
+{{- $myT := partialCached "functions/title_tokens.html" $self.Title $self.Title -}}
+{{- $myTags := apply ($self.Params.tags | default slice) "lower" "." -}}
+{{- $myAuthors := slice }}{{ range $self.Params.authors }}{{ if ne . $owner }}{{ $myAuthors = $myAuthors | append . }}{{ end }}{{ end -}}
+{{- $myLast := slice }}{{ range $myAuthors }}{{ $myLast = $myLast | append (lower (index (last 1 (split . " ")) 0)) }}{{ end -}}
+{{- $nExplicit := len $picks -}}
+{{- $threshold := cond (lt $nExplicit 3) 2 4 -}}
+{{- $scored := slice -}}
+{{- range $pool -}}
+  {{- if not (in $used .RelPermalink) -}}
+    {{- $s := 0 -}}
+    {{- if intersect $myAreas (.Params.research_areas | default slice) }}{{ $s = add $s 3 }}{{ end -}}
+    {{- $s = add $s (mul 2 (len (intersect $myT (partialCached "functions/title_tokens.html" .Title .Title)))) -}}
+    {{- $s = add $s (mul 2 (len (intersect $myTags (apply (.Params.tags | default slice) "lower" ".")))) -}}
+    {{- range .Params.authors -}}
+      {{- if ne . $owner -}}
+        {{- if in $myAuthors . }}{{ $s = add $s 1 }}{{ else if in $myLast (lower (index (last 1 (split . " ")) 0)) }}{{ $s = add $s 1 }}{{ end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if ge $s $threshold }}{{ $scored = $scored | append (dict "url" .RelPermalink "title" .Title "kind" (partial "functions/work_kind.html" .) "score" $s "year" .Date.Year) }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- $picks = $picks | append $scored -}}
+
+{{/* Sort (score desc, then year desc), dedupe titles, cap at 8 */}}
+{{- $keyed := slice -}}
+{{- range $picks }}{{ $keyed = $keyed | append (merge . (dict "k" (add (mul .score 10000) .year))) }}{{ end -}}
+{{- $seen := slice (replaceRE `[^a-z0-9]` "" (lower $self.Title)) -}}
+{{- $final := slice -}}
+{{- range sort $keyed "k" "desc" -}}
+  {{- $norm := replaceRE `[^a-z0-9]` "" (lower .title) -}}
+  {{- if and (not (in $seen $norm)) (lt (len $final) 8) }}{{ $final = $final | append . }}{{ $seen = $seen | append $norm }}{{ end -}}
+{{- end -}}
+
+{{- with $final }}
+<section class="gk-see-also" aria-labelledby="see-also-heading">
+  <h2 id="see-also-heading">{{ i18n "see_also" }}</h2>
+  <ul>
+    {{- range . }}
+    <li><span class="kind kind--{{ replace .kind "kind_" "" }}">[{{ i18n .kind }}]</span> <a href="{{ .url }}">{{ .title }}</a>{{ with .year }} <span class="year">({{ . }})</span>{{ end }}</li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}

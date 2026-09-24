@@ -1,0 +1,8 @@
+# Short URLs. Each entry makes https://<site>/<from>/ redirect to <to>.
+# Example:
+# - from: cv
+#   to: files/fails-cv.pdf
+- from: cv
+  to: files/fails-cv.pdf
+- from: bio
+  to: ""

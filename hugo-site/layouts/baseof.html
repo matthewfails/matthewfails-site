@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="{{ site.LanguageCode | default "en-us" }}" dir="ltr" data-wc-theme-default="light">
+  {{ partial "site_head" . }}
+  <body class="page-wrapper" id="top">
+    <a class="skip-link" href="#main-content">{{ i18n "skip_to_content" }}</a>
+    <header class="site-header" data-pagefind-ignore>
+      {{ partial "components/headers/navbar.html" . }}
+    </header>
+    <main id="main-content" class="site-main{{ if ne .Type "landing" }} site-main--content{{ end }}" tabindex="-1">
+      {{ block "main" . }}{{ end }}
+    </main>
+    {{ partial "site_footer" . }}
+    {{ partial "components/search-modal.html" . }}
+  </body>
+</html>

@@ -1,0 +1,38 @@
+{{ define "main" }}
+{{/* People: co-authors auto-discovered from every authors: field (minus the owner and any names in
+     front-matter `exclude`), split into faculty and student co-authors (student_authors), and linked
+     via data/coauthors.json. */}}
+{{- $owner := site.Params.owner.name -}}
+{{- $exclude := .Params.exclude | default slice -}}
+{{- $names := slice -}}
+{{- $students := slice -}}
+{{- range where site.RegularPages "Section" "in" (slice "publication" "talk" "software") -}}
+  {{- range .Params.authors }}{{ if and (ne . $owner) (not (in $names .)) (not (in $exclude .)) }}{{ $names = $names | append . }}{{ end }}{{ end -}}
+  {{- range .Params.student_authors }}{{ if not (in $students .) }}{{ $students = $students | append . }}{{ end }}{{ end -}}
+{{- end -}}
+{{- $faculty := slice }}{{ $studs := slice -}}
+{{- range $names -}}
+  {{- $d := dict "name" . "key" (printf "%s %s" (index (last 1 (split . " ")) 0) .) -}}
+  {{- if in $students . }}{{ $studs = $studs | append $d }}{{ else }}{{ $faculty = $faculty | append $d }}{{ end -}}
+{{- end -}}
+<div class="container-narrow">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ "" | relURL }}">{{ i18n "home" }}</a> <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ .Title }}</span>
+  </nav>
+  <header class="page-head"><h1>{{ .Title }}</h1>{{ with .Content }}<div class="page-intro">{{ . }}</div>{{ end }}</header>
+  {{- with $faculty }}
+  <section aria-labelledby="faculty-coauthors">
+    <h2 id="faculty-coauthors">{{ i18n "faculty_coauthors" }}</h2>
+    {{ partial "people_list.html" . }}
+  </section>
+  {{- end }}
+  {{- with $studs }}
+  <section aria-labelledby="student-coauthors">
+    <h2 id="student-coauthors">{{ i18n "student_coauthors" }}</h2>
+    {{ with $.Params.student_intro }}<p class="people-intro">{{ . | markdownify }}</p>{{ end }}
+    {{ partial "people_list.html" . }}
+  </section>
+  {{- end }}
+</div>
+{{ end }}

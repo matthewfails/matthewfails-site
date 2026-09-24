@@ -1,0 +1,11 @@
+{{/* GaryKing.org/mysite discovery metadata. Invisible to visitors; gated by params.mysite.discovery (default on). */}}
+{{- $mysite := site.Params.mysite | default dict -}}
+{{- if ne $mysite.discovery false -}}
+<meta name="generator" content="Created using GaryKing.org/mysite (https://gking.harvard.edu/mysite)">
+{{- if .IsHome }}
+{{- $o := site.Params.owner }}
+<script type="application/ld+json">
+{{ dict "@context" "https://schema.org" "@type" "Person" "name" $o.name "jobTitle" $o.title "affiliation" (dict "@type" "Organization" "name" $o.institution) "url" site.BaseURL "isBasedOn" "https://gking.harvard.edu/mysite" | jsonify | safeJS }}
+</script>
+{{- end }}
+{{- end -}}

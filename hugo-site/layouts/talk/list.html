@@ -1,0 +1,20 @@
+{{ define "main" }}
+{{- $talks := (where site.RegularPages "Section" "talk").ByDate.Reverse -}}
+<div class="container-narrow">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ "" | relURL }}">{{ i18n "home" }}</a> <span aria-hidden="true">/</span>
+    <a href="{{ "publication/" | relURL }}">{{ i18n "writings" }}</a> <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ .Title }}</span>
+  </nav>
+  <header class="page-head"><h1>{{ .Title }}</h1>{{ with .Content }}<div class="page-intro">{{ . }}</div>{{ end }}</header>
+  {{- range $talks.GroupByDate "2006" }}
+  <h2 class="year-heading">{{ .Key }}</h2>
+  <div class="pub-list">
+    {{- range .Pages }}
+    <article class="pub-list-item"><span class="view-citation">{{ partial "citation_line.html" (dict "page" . "link" true) }}</span></article>
+    {{- end }}
+  </div>
+  {{- end }}
+  <p class="work-note"><span aria-hidden="true">*</span> {{ i18n "student_note" }}</p>
+</div>
+{{ end }}

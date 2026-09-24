@@ -1,0 +1,12 @@
+# Matthew D. Fails
+
+> Matthew D. Fails is Professor of Political Science at Oakland University (Rochester, Michigan). His research focuses on democratic erosion and performance (including presidential term limit evasion), the politics of oil and natural resource wealth (the resource curse, fuel subsidies), authoritarian politics, institutions and political risk, colonialism and long-run development, and mass attitudes toward democracy.
+
+## Key pages
+- [Home / bio](https://matthewfails.github.io/matthewfails-site/): short biography and links
+- [C.V. (PDF)](https://matthewfails.github.io/matthewfails-site/files/fails-cv.pdf)
+- [Writings](https://matthewfails.github.io/matthewfails-site/publication/): journal articles, book reviews, essays, and replication datasets, with abstracts
+- [People](https://matthewfails.github.io/matthewfails-site/authors/): faculty and student co-authors
+- [Teaching](https://matthewfails.github.io/matthewfails-site/teaching/)
+- [Contact](https://matthewfails.github.io/matthewfails-site/contact/)
+- [Replication data on Harvard Dataverse](https://dataverse.harvard.edu/dataverse/matthewfails)

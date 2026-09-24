@@ -1,0 +1,15 @@
+{
+  "groups": [
+    {
+      "name": "Applications",
+      "areas": [
+        { "slug": "democratic-backsliding", "title": "Democratic Backsliding and Presidential Term Limit Evasion" },
+        { "slug": "resource-curse", "title": "The Resource Curse, Oil, and Politics" },
+        { "slug": "authoritarian-politics", "title": "Authoritarian Politics" },
+        { "slug": "political-risk", "title": "Institutions, Property Rights, and Political Risk" },
+        { "slug": "colonialism", "title": "Colonialism and Long-Run Development" },
+        { "slug": "mass-attitudes", "title": "Mass Attitudes and Democratization" }
+      ]
+    }
+  ]
+}

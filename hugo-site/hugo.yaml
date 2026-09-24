@@ -1,0 +1,79 @@
+baseURL: "https://matthewfails.github.io/matthewfails-site/"   # MUST end with slash
+title: "Matthew D. Fails"
+languageCode: en-us
+enableRobotsTXT: true
+disableKinds: [taxonomy, term]
+
+module:
+  hugoVersion:
+    min: "0.148.2"
+    extended: true
+  imports:
+    - path: github.com/HugoBlox/hugo-blox-builder/modules/blox-tailwind
+
+outputs:
+  home: [HTML, RSS]
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+params:
+  appearance:
+    theme_day: custom
+    theme_night: custom
+    color: custom
+    mode: light
+    color_mode: light
+    font: native
+    font_size: L
+  header:
+    navbar:
+      enable: true
+      show_search: true
+      logo:
+        text: "Matthew D. Fails"
+  features:
+    search:
+      provider: pagefind
+  extensions:
+    css:
+      - css/custom.css
+  # GaryKing.org/mysite options (from the owner's information form)
+  mysite:
+    credit: false      # "Footer credit" box unchecked
+    discovery: true    # "Invisible marker" box checked
+  owner:
+    name: "Matthew D. Fails"
+    short_name: "Matthew Fails"
+    initials: "MF"
+    title: "Professor of Political Science"
+    institution: "Oakland University"
+    institution_url: "https://www.oakland.edu/polisci/"
+    email: "fails@oakland.edu"
+    phone: "(248) 370-2765"
+    twitter: "matthew_fails"
+    scholar: "https://scholar.google.com/citations?user=x3wCNjgAAAAJ&hl=en"
+    dataverse: "https://dataverse.harvard.edu/dataverse/matthewfails"
+    linkedin: "https://www.linkedin.com/in/matthew-fails-2319223/"
+    cv: "files/fails-cv.pdf"
+
+permalinks:
+  publication: /publication/:contentbasename/
+  talk: /talk/:contentbasename/
+
+menu:
+  main:
+    - name: Writings
+      url: /publication/
+      weight: 20
+    - name: People
+      url: /authors/
+      weight: 50
+    - name: Teaching
+      url: /teaching/
+      weight: 60
+    - name: Contact
+      url: /contact/
+      weight: 70

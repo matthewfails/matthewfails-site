@@ -1,0 +1,120 @@
+- id: skip_to_content
+  translation: "Skip to main content"
+- id: search
+  translation: "Search"
+- id: search_placeholder
+  translation: "Search this site"
+- id: search_fallback
+  translation: "Search this site with Google"
+- id: home
+  translation: "Home"
+- id: writings
+  translation: "Writings"
+- id: presentations
+  translation: "Presentations"
+- id: abstract
+  translation: "Abstract"
+- id: see_also
+  translation: "See Also"
+- id: view_all
+  translation: "View all"
+- id: bio_cv
+  translation: "Bio & C.V."
+- id: download_cv
+  translation: "Download C.V. (PDF)"
+- id: contact
+  translation: "Contact"
+- id: all
+  translation: "All"
+- id: tab_articles
+  translation: "Articles"
+- id: tab_reviews_essays
+  translation: "Reviews & Essays"
+- id: tab_presentations
+  translation: "Presentations"
+- id: tab_data
+  translation: "Data"
+- id: filter_search
+  translation: "Search writings"
+- id: filter_area
+  translation: "Research area"
+- id: filter_area_all
+  translation: "All research areas"
+- id: filter_year
+  translation: "Year"
+- id: filter_type
+  translation: "Type"
+- id: reset
+  translation: "Reset filters"
+- id: sort
+  translation: "Sort"
+- id: sort_newest
+  translation: "Newest first"
+- id: sort_oldest
+  translation: "Oldest first"
+- id: sort_title_az
+  translation: "Title A–Z"
+- id: sort_title_za
+  translation: "Title Z–A"
+- id: results_of
+  translation: "of"
+- id: results
+  translation: "results"
+- id: download_bibtex
+  translation: "Download citations (BibTeX)"
+- id: student_note
+  translation: "undergraduate student co-author"
+- id: replication_data_for
+  translation: "Replication data for:"
+- id: dataverse_link
+  translation: "Replication data on Harvard Dataverse"
+- id: kind_paper
+  translation: "Paper"
+- id: kind_presentation
+  translation: "Presentation"
+- id: kind_dataset
+  translation: "Dataset"
+- id: kind_review
+  translation: "Review"
+- id: kind_essay
+  translation: "Essay"
+- id: kind_software
+  translation: "Software"
+- id: kind_book
+  translation: "Book"
+- id: kind_link
+  translation: "Link"
+- id: presented_at
+  translation: "Presented at"
+- id: not_found_title
+  translation: "Page not found"
+- id: not_found_text
+  translation: "The page you were looking for isn't here. Try searching the site, or start from one of these pages:"
+- id: google_scholar
+  translation: "Google Scholar"
+- id: dataverse
+  translation: "Harvard Dataverse"
+- id: email
+  translation: "Email"
+- id: cite
+  translation: "Cite (BibTeX)"
+- id: writings_access_note
+  translation: ""
+- id: type_journal_article
+  translation: "Journal article"
+- id: type_book_review
+  translation: "Book review"
+- id: type_essay
+  translation: "Essay"
+- id: type_data
+  translation: "Dataset"
+- id: type_presentation
+  translation: "Presentation"
+- id: no_results
+  translation: "Nothing matches these filters."
+- id: faculty_coauthors
+  translation: "Faculty Co-authors"
+- id: student_coauthors
+  translation: "Student Co-authors"
+- id: writings_research
+  translation: "Writings & Research Areas"

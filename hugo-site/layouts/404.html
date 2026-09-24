@@ -1,0 +1,13 @@
+{{ define "main" }}
+<div class="container-narrow" data-pagefind-ignore>
+  <header class="page-head"><h1>{{ i18n "not_found_title" }}</h1></header>
+  <p>{{ i18n "not_found_text" }}</p>
+  <p><button type="button" class="btn btn-primary" data-search-open>{{ i18n "search" }}</button></p>
+  <ul class="plain-list">
+    <li><a href="{{ "" | relURL }}">{{ i18n "home" }}</a></li>
+    {{- range site.Menus.main }}{{ $url := .URL }}
+    <li><a href="{{ $url }}">{{ .Name }}</a></li>
+    {{- end }}
+  </ul>
+</div>
+{{ end }}

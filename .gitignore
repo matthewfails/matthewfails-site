@@ -1,0 +1,4 @@
+hugo-site/public/
+hugo-site/resources/_gen/
+hugo-site/node_modules/
+hugo-site/.hugo_build.lock

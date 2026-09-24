@@ -1,0 +1,50 @@
+{{- $p := . -}}
+{{- $students := $p.Params.student_authors | default slice -}}
+{{- $isTalk := eq $p.Section "talk" -}}
+<article class="work container-narrow" data-pagefind-body>
+  <nav class="breadcrumb" aria-label="Breadcrumb" data-pagefind-ignore>
+    <a href="{{ "" | relURL }}">{{ i18n "home" }}</a> <span aria-hidden="true">/</span>
+    <a href="{{ "publication/" | relURL }}">{{ i18n "writings" }}</a> <span aria-hidden="true">/</span>
+    {{- if $isTalk }}
+    <a href="{{ "talk/" | relURL }}">{{ i18n "presentations" }}</a> <span aria-hidden="true">/</span>
+    {{- end }}
+    <span aria-current="page">{{ $p.Title | truncate 60 }}</span>
+  </nav>
+
+  <header class="work-header">
+    <h1 data-pagefind-meta="title">{{ $p.Title }}</h1>
+    <p class="work-cite">{{ partial "citation_line.html" (dict "page" $p "link" false "title" false) }}</p>
+    {{- with $students }}<p class="work-note"><span aria-hidden="true">*</span> {{ i18n "student_note" }}</p>{{ end }}
+  </header>
+
+  {{- with $p.Params.related_paper }}{{ with site.GetPage (printf "/publication/%s" .) }}
+  <p class="dataset-banner"><span class="kind kind--dataset">[{{ i18n "kind_dataset" }}]</span> {{ i18n "replication_data_for" }} <a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
+  {{- end }}{{ end }}
+
+  {{ partial "work_links.html" $p }}
+
+  {{- $img := ($p.Resources.ByType "image").GetMatch "*featured*" }}
+  {{- with $img }}
+  {{- $r := .Fit "360x480 webp" }}
+  <figure class="work-figure">
+    <img src="{{ $r.RelPermalink }}" width="{{ $r.Width }}" height="{{ $r.Height }}" alt="{{ $p.Title }}" loading="lazy">
+    {{ with $p.Params.image_credit }}<figcaption>{{ . }}</figcaption>{{ end }}
+  </figure>
+  {{- end }}
+
+  {{- with $p.Params.abstract }}
+  <section class="work-abstract" id="abstract">
+    <h2>{{ i18n "abstract" }}</h2>
+    <p>{{ . | markdownify }}</p>
+  </section>
+  {{- end }}
+
+  {{- with $p.Content }}<div class="prose">{{ . }}</div>{{ end }}
+
+  <details class="work-bibtex" data-pagefind-ignore>
+    <summary>{{ i18n "cite" }}</summary>
+    <pre><code>{{ partial "functions/bibtex.html" $p }}</code></pre>
+  </details>
+
+  <div data-pagefind-ignore>{{ partial "related_finder.html" $p }}</div>
+</article>

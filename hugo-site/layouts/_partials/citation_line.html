@@ -1,0 +1,17 @@
+{{/* One dense citation: Authors (* = student). Year. "Title." Venue. Context: dict "page" p "link" bool */}}
+{{- $p := .page -}}
+{{- $owner := site.Params.owner.name -}}
+{{- $students := $p.Params.student_authors | default slice -}}
+{{- $n := len ($p.Params.authors | default slice) -}}
+<span class="cite-authors">
+{{- range $i, $a := $p.Params.authors -}}
+  {{- if gt $i 0 }}{{ if eq (add $i 1) $n }}{{ if gt $n 2 }},{{ end }} and {{ else }}, {{ end }}{{ end -}}
+  {{- if eq $a $owner }}<span class="cite-owner">{{ $a }}</span>{{ else }}{{ $a }}{{ end -}}
+  {{- if in $students $a }}<abbr class="student-mark" title="{{ i18n "student_note" }}">*</abbr>{{ end -}}
+{{- end -}}
+</span>. <span class="cite-year">{{ $p.Date.Year }}</span>.
+{{- if ne .title false }}
+{{ if .link }}<a class="cite-title" href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>{{ else }}<span class="cite-title">{{ $p.Title }}</span>{{ end }}{{ if not (findRE `[.?!]$` $p.Title) }}.{{ end }}
+{{- end }}
+{{ with $p.Params.publication }}<span class="cite-venue">{{ . }}</span>.{{ end -}}
+{{ with $p.Params.event }}<span class="cite-venue">{{ i18n "presented_at" }} {{ . }}</span>.{{ end -}}

@@ -1,0 +1,4 @@
+{{/* Short URLs from data/redirects.yaml (e.g. /cv/ -> the C.V. PDF). Edit that file, not this one. */}}
+{{- range site.Data.redirects -}}
+  {{- $.AddPage (dict "path" .from "title" .from "kind" "page" "type" "redirect" "layout" "single" "params" (dict "redirect_to" .to "private" true) "build" (dict "list" "never") "sitemap" (dict "disable" true)) -}}
+{{- end -}}
