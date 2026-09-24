@@ -40,6 +40,8 @@ params:
   extensions:
     css:
       - css/custom.css
+  # Google Search Console "HTML tag" verification code (just the content="..." value)
+  google_site_verification: "ezlMkyLyJEt8FZ471U2ylc3YNToJCfLIwC0xI5Fw3Hw"
   # GaryKing.org/mysite options (from the owner's information form)
   mysite:
     credit: false      # "Footer credit" box unchecked

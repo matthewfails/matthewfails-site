@@ -12,6 +12,9 @@
   {{- with .Params.summary }}{{ $desc = . }}{{ else }}{{ with .Params.abstract }}{{ $desc = . }}{{ else }}{{ with .Params.description }}{{ $desc = . }}{{ else }}{{ $desc = printf "%s, %s, %s." $owner.name $owner.title $owner.institution }}{{ end }}{{ end }}{{ end }}
   <meta name="description" content="{{ $desc | plainify | htmlUnescape | truncate 300 }}" />
   <link rel="canonical" href="{{ .Permalink }}" />
+  {{- with site.Params.google_site_verification }}
+  <meta name="google-site-verification" content="{{ . }}" />
+  {{- end }}
   {{- if .Params.private }}<meta name="robots" content="noindex" />{{ end }}
 
   {{/* Open Graph */}}
