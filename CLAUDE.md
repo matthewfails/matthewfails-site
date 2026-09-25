@@ -39,7 +39,7 @@ cd /tmp/mfsite && python3 -m http.server 8765   # http://localhost:8765/matthewf
 - **Old Google Site** (sites.google.com/oakland.edu/mfails) now points visitors to this site. The owner plans to unpublish it once this site outranks it in search.
 - **C.V.**: `hugo-site/static/files/fails-cv.pdf` (the `/cv/` short link points here). Current file = `MDF_CV_Sept26_update.pdf`; its "personal website" link points to this site. To update, overwrite that one file, keeping the same name.
 - **Teaching page** opening describes courses by topic, not course title (owner preference).
-- **Headshot** (new photo, 2026-09-25): shown as a 4:5 PORTRAIT rectangle with rounded corners, not a circle. The owner rejected circle crops: too close up, and padding the sides made the shoulders look too broad. `bio-photo.jpg` is the original photo cropped to full width at 4:5 (640×800), with no added background.
+- **Headshot** (new photo, 2026-09-25): shown as a 4:5 PORTRAIT rectangle with rounded corners, not a circle. The owner rejected circle crops: too close up, and padding the sides made the shoulders look too broad. `bio-photo.jpg` is the owner's own high-res 4:5 crop (2887×3609, uploaded via GitHub). The homepage generates 200/400/600/800-px-wide WebP versions with `srcset` so it stays sharp on high-DPI screens. Upload future photos at ≥1200×1500, 4:5.
 - **"Writings" was renamed "Research"** (menu, page title, breadcrumbs, homepage button). The URL stays `/publication/` for link stability; i18n keys are still named `writings*`.
 
 ## Pending

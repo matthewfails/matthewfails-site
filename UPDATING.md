@@ -76,7 +76,7 @@ The short link `…/cv/` always points there.
 
 Your headshot is `hugo-site/assets/media/bio-photo.jpg`. It is used on the homepage.
 To swap it, upload a new photo with **exactly that name**, overwriting the old file.
-It is displayed as a portrait rectangle (4:5, e.g. 640×800 pixels), cropped from the top. If you delete the file, an "MF" circle appears instead.
+It is displayed as a portrait rectangle (4:5), cropped from the top. Upload a large, high-quality JPEG, at least 1200×1500 pixels, already cropped to 4:5; the site makes the smaller sizes automatically. If you delete the file, an "MF" circle appears instead.
 
 ## People page
 
