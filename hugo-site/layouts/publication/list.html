@@ -237,7 +237,7 @@
     var bib = visibleEntries().map(function(d) { return d.bibtex; }).join('\n\n') + '\n';
     var a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([bib], { type: 'application/x-bibtex' }));
-    a.download = 'fails-writings.bib'; document.body.appendChild(a); a.click();
+    a.download = 'fails-research.bib'; document.body.appendChild(a); a.click();
     setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 0);
   });
   window.addEventListener('popstate', function() { state = readHash(); render(); });

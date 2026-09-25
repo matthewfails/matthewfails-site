@@ -4,8 +4,8 @@
 <section class="hero container-wide" aria-label="Introduction">
   <div class="hero-photo">
     {{- with $photo }}
-    {{- $r := .Fill "400x400 Center webp" }}
-    <img src="{{ $r.RelPermalink }}" width="200" height="200" alt="Portrait of {{ $o.name }}, {{ $o.institution }}">
+    {{- $r := .Fill "400x500 Top webp" }}
+    <img src="{{ $r.RelPermalink }}" width="200" height="250" alt="Portrait of {{ $o.name }}, {{ $o.institution }}">
     {{- else }}
     <div class="monogram" role="img" aria-label="{{ $o.name }}">{{ $o.initials }}</div>
     {{- end }}

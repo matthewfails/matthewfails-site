@@ -1,5 +1,5 @@
 ---
-title: "Writings"
+title: "Research"
 tabs:
   - { id: articles,       label: tab_articles }
   - { id: reviews-essays, label: tab_reviews_essays }

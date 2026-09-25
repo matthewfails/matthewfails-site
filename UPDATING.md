@@ -49,14 +49,14 @@ dataverse_url: "https://doi.org/10.7910/DVN/XXXXX"   # optional
 4. Upload the PDF to `hugo-site/static/files/` with the same filename.
 5. Optional: drop a journal cover image named `featured.jpg` into the paper's folder.
 
-The "See Also" links, the Writings page, the homepage research areas, search, and the
+The "See Also" links, the Research page, search, and the
 People page all update automatically. A co-author listed in `student_authors` appears under
 "Student Co-authors" on the People page; everyone else appears under "Faculty Co-authors".
 
 **Research area names:** `democratic-backsliding`, `resource-curse`, `authoritarian-politics`,
 `political-risk`, `colonialism`, `mass-attitudes`. To rename an area or add a new one, edit
 `hugo-site/data/research_areas.json`.
-Research areas appear as a filter on the Writings page.
+Research areas appear as a filter on the Research page.
 
 ## Add a replication dataset
 
@@ -76,7 +76,7 @@ The short link `…/cv/` always points there.
 
 Your headshot is `hugo-site/assets/media/bio-photo.jpg`. It is used on the homepage.
 To swap it, upload a new photo with **exactly that name**, overwriting the old file.
-A square image works best, about 720×720 pixels. If you delete the file, an "MF" circle appears instead.
+It is displayed as a portrait rectangle (4:5, e.g. 640×800 pixels), cropped from the top. If you delete the file, an "MF" circle appears instead.
 
 ## People page
 

@@ -310,3 +310,9 @@ body.search-open { overflow: hidden; }
 .navbar-search-label { display: none; }
 @media (max-width: 899px) { .navbar-search { gap: .6rem; font-family: var(--font-heading); font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; } .navbar-search-label { display: inline; } }
 .people-intro { max-width: 46rem; margin: 0 0 1rem; }
+/* Thin ring so a white-background headshot still reads as a circle on the off-white page */
+.hero-photo img, .page-photo { box-shadow: 0 0 0 1px var(--color-border-strong); }
+
+/* Portrait (4:5) headshot frame: shows the full photo width without padding */
+.hero-photo img { width: 200px; height: 250px; border-radius: 8px; object-fit: cover; }
+@media (max-width: 640px) { .hero.container-wide { padding-top: 1.75rem; } }

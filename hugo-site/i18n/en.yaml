@@ -9,7 +9,7 @@
 - id: home
   translation: "Home"
 - id: writings
-  translation: "Writings"
+  translation: "Research"
 - id: presentations
   translation: "Presentations"
 - id: abstract
@@ -35,7 +35,7 @@
 - id: tab_data
   translation: "Data"
 - id: filter_search
-  translation: "Search writings"
+  translation: "Search"
 - id: filter_area
   translation: "Research area"
 - id: filter_area_all
@@ -117,4 +117,4 @@
 - id: student_coauthors
   translation: "Student Co-authors"
 - id: writings_research
-  translation: "Writings & Research Areas"
+  translation: "Research"

@@ -5,7 +5,7 @@
 ## Key pages
 - [Home / bio](https://matthewfails.github.io/matthewfails-site/): short biography and links
 - [C.V. (PDF)](https://matthewfails.github.io/matthewfails-site/files/fails-cv.pdf)
-- [Writings](https://matthewfails.github.io/matthewfails-site/publication/): journal articles, book reviews, essays, and replication datasets, with abstracts
+- [Research](https://matthewfails.github.io/matthewfails-site/publication/): journal articles, book reviews, essays, and replication datasets, with abstracts
 - [People](https://matthewfails.github.io/matthewfails-site/authors/): faculty and student co-authors
 - [Teaching](https://matthewfails.github.io/matthewfails-site/teaching/)
 - [Contact](https://matthewfails.github.io/matthewfails-site/contact/)
