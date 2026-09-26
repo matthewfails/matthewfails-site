@@ -3,9 +3,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   {{- if .IsHome }}
-  <title>{{ $owner.name }} | {{ $owner.title }}, {{ $owner.institution }}</title>
+  <title>{{ $owner.short_name }} | {{ $owner.title }}, {{ $owner.institution }}</title>
   {{- else }}
-  <title>{{ .Title }} | {{ $owner.name }}</title>
+  <title>{{ .Title }} | {{ $owner.short_name }}</title>
   {{- end }}
   <meta name="author" content="{{ $owner.name }}" />
   {{- $desc := "" -}}
