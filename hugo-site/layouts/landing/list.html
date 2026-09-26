@@ -6,13 +6,13 @@
     {{- with $photo }}
     {{- /* 1x-4x versions: browsers pick the sharpest one each screen (or zoom level) needs */ -}}
     {{- $r1 := .Fill "200x250 Top webp q90" }}{{ $r2 := .Fill "400x500 Top webp q90" }}{{ $r3 := .Fill "600x750 Top webp q90" }}{{ $r4 := .Fill "800x1000 Top webp q90" }}
-    <img src="{{ $r2.RelPermalink }}" srcset="{{ $r1.RelPermalink }} 200w, {{ $r2.RelPermalink }} 400w, {{ $r3.RelPermalink }} 600w, {{ $r4.RelPermalink }} 800w" sizes="200px" width="200" height="250" alt="Portrait of {{ $o.name }}, {{ $o.institution }}">
+    <img src="{{ $r2.RelPermalink }}" srcset="{{ $r1.RelPermalink }} 200w, {{ $r2.RelPermalink }} 400w, {{ $r3.RelPermalink }} 600w, {{ $r4.RelPermalink }} 800w" sizes="200px" width="200" height="250" alt="Portrait of {{ $o.short_name }}, {{ $o.institution }}">
     {{- else }}
-    <div class="monogram" role="img" aria-label="{{ $o.name }}">{{ $o.initials }}</div>
+    <div class="monogram" role="img" aria-label="{{ $o.short_name }}">{{ $o.initials }}</div>
     {{- end }}
   </div>
   <div class="hero-text">
-    <h1>{{ $o.name }}</h1>
+    <h1>{{ $o.short_name }}</h1>
     <p class="hero-role">{{ $o.title }}<br><a href="{{ $o.institution_url }}">{{ $o.institution }}</a></p>
     <div class="hero-intro">{{ .Content }}</div>
     <p class="hero-actions">

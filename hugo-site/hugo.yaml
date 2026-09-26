@@ -33,7 +33,7 @@ params:
       enable: true
       show_search: true
       logo:
-        text: "Matthew D. Fails"
+        text: "Matthew Fails"
   features:
     search:
       provider: pagefind

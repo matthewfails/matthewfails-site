@@ -2,7 +2,7 @@
 <footer class="site-footer" data-pagefind-ignore>
   <div class="footer-inner">
     <div class="footer-id">
-      <p class="footer-name">{{ $o.name }}</p>
+      <p class="footer-name">{{ $o.short_name }}</p>
       <p>{{ $o.title }}<br><a href="{{ $o.institution_url }}">{{ $o.institution }}</a></p>
       <p>{{ i18n "email" }}: <a href="mailto:{{ $o.email }}">{{ $o.email }}</a></p>
     </div>
@@ -23,7 +23,7 @@
     </nav>
   </div>
   <div class="footer-bottom">
-    <p>&copy; {{ now.Year }} {{ $o.name }}</p>
+    <p>&copy; {{ now.Year }} {{ $o.short_name }}</p>
     {{- $mysite := site.Params.mysite | default dict }}
     {{- if ne $mysite.credit false }}
     <p class="footer-credit">Created using <a href="https://garyking.org/mysite">GaryKing.org/mysite</a></p>
