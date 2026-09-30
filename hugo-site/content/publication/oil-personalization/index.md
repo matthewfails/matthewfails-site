@@ -1,6 +1,6 @@
 ---
 title: "Oil Income and the Personalization of Autocratic Politics"
-date: 2019-04-01
+date: 2020-10-01
 authors: ["Matthew D. Fails"]
 publication_types: ["journal_article"]
 publication: "Political Science Research and Methods 8 (4): 772–779"
