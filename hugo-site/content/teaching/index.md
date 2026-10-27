@@ -7,6 +7,8 @@ In the Fall of 2024, I led one of Oakland University's inaugural Diplomacy Lab t
 
 I am a strong proponent of undergraduate research and have mentored dozens of students in independent research projects that have been presented at local and national conferences. I have also [co-authored several papers with undergraduate students]({{< staticrel "authors/#student-coauthors" >}}), and mentored independent undergraduate research projects to the publication stage. For example, see former student Mallory Waligora's [published paper at the *Pi Sigma Alpha Undergraduate Journal of Politics* (Spring 2026) (PDF)]({{< staticrel "files/waligora-live-and-let-tie.pdf" >}}).
 
+For students starting their own projects, I maintain the [Political Science Data Finder](https://matthewfails.github.io/polisci-data/), a searchable guide to datasets for undergraduate research. Students can search by topic, by the variable they want to measure, or by unit of analysis.
+
 Since 2017, I have organized and facilitated the Undergraduate Political Science Research Symposium, which provides opportunities for students to present poster versions of their research. [See photos and more information about the research symposiums](https://sites.google.com/oakland.edu/politicalscienceposters).
 <!-- FLAG FOR OWNER: the old Teaching page says the symposium has run "since 2017"; your C.V. lists "Founder, Political Science Research Symposium (2010-present)". Kept the old site's wording. -->
 
